@@ -18,3 +18,40 @@ http serve
 sudo python3 -m http.server 80
 
 sudo lastb
+
+create a user without home directory
+sudo useradd -M julie
+-M do not create home directory
+
+Create Service account / application account
+
+Often do not set a password and optionally prevent interactive login:
+
+$ sudo useradd -M -s /sbin/nologin username
+
+delete user
+sudo userdel julie   -> this will only removes users entry from /etc/passwd, /etc/shadow, /etc/group . it will not delete user's home directory or the users mailbox which is located at /var/spool/mail/username | /var/mail/username
+
+delete user along with its home directory and mailbox 
+
+sudo userdel -r julie
+
+$ create a user with expiry 2027-01-05 - THIS IS NOT PASSWD EXPIRY. ITS ACCOUNT EXPIRY
+
+sudo useradd -m -e 2025-01-05 julie
+
+id julie
+sudo chage -l julie
+
+If the user already exists:
+sudo usermod -e 2027-01-01 john
+
+To remove the expiration date completely:
+sudo usermod -e "" john
+or
+sudo chage -E -1 john    --> Capital E - remove expiry
+
+chage -l username      # View password aging
+chage -M 90 username   # Set password expiry
+chage -d 0 username    # Force password reset at next login
+chage -E YYYY-MM-DD username  # Set account expiry
